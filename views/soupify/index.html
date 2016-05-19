@@ -1,25 +1,20 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,True}}
 {{extend 'layout.html'}}
 
-{{block header}}
-    <header class="container-fluid background">
-      <div class="jumbotron text-center">
-        {{if response.title:}}
-        <h1>{{=response.title}}
-          <small>{{=response.subtitle or ''}}</small></h1>
-        {{pass}}
-      </div>
-    </header>
-{{end}}
-{{block right_sidebar}}
-{{end}}
+{{=H2(search_params)}}
 {{if 'rows' in globals():}}
     {{for row in rows:}}
         <div id="main_{{=row.id}}" onclick="jQuery('#subid-{{=row.id}}').slideToggle();" class="panel panel-default row">
             <div class='panel-heading'>
                 {{=B(row.id)}}
                 {{ttl=row.recipe_title.replace('|','')}}
-                {{=ttl}}
+                {{for t in ttl.split(' '):}}
+                    {{if t.lower() in ['with', 'and']:}}
+                        {{=t}}
+                    {{else:}}
+                        {{=A(t, _href=URL('index.html', vars={'search_string':t}), )}}
+                    {{pass}}
+                {{pass}}
                 {{=row.recipe_serves.replace('|','')}}
             </div>
             <div id="subid-{{=row.id}}" style="display:none;" class='panel-body'>

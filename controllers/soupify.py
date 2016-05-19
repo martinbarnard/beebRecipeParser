@@ -1,23 +1,21 @@
 # Our Data Structures
 our_data=[]
 # Our constants, rather than reload them each call
-serving={'p_class':'recipe-metadata__serving', 'p_itemprop':'recipeYield'}
-description={'p_class':'recipe-description__text', 'p_itemprop':'description'}
-ingredients_list_weight={'li_class':'recipe-ingredients__list-item', 'li_itemprop':'ingredients'}
-method_list={'p_class':'recipe-method__list-item-text'}
-cooking_time={'p_class':'recipe-metadata__cook-time', 'p_itemprop':'cookTime'}
-recipe_author={'p_class':'recipe-is-from-widget__programme-series-title' }
-content_title={'h1_class':'content-title__text'}
 from BeautifulSoup import BeautifulSoup
 def index():
-    #db.recipe.recipe_title.represent=lambda id,row: row.recipe_title.replace('|','')
-    #db.recipe.recipe_description.represent=lambda id,row: row.recipe_description.replace('|','')
-    #db.recipe.recipe_ingredients.represent=lambda id,row: UL(row.recipe_ingredients)
-    #db.recipe.method_list.represent=lambda id,row: UL(row.method_list)
-    #db.recipe.recipe_serves.represent=lambda id,row: row.recipe_serves.replace('|','')
-    #db.recipe.recipe_author.represent=lambda id,row: row.recipe_author.replace('|','')
-    rows=db(db.recipe).select(db.recipe.ALL,orderby=~db.recipe.id, limitby=(0,100))
-    return dict(rows=rows)
+    rows=db(db.recipe)
+    sort_by='recipe_title'
+    inverse=False
+    if request.vars.has_key('search_string'):
+        rows=rows(db.recipe.recipe_title.contains(request.vars.search_string))
+        orderby=db.recipe[sort_by]
+    else:
+        orderby='<random>'
+
+    # Final select
+    rows=rows.select(db.recipe.ALL, orderby=orderby, limitby=(0,100))
+    return dict(rows=rows, search_params=request.vars.search_string)
+
 
 
 def redo_db():

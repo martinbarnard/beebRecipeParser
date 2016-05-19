@@ -25,7 +25,6 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), []),
         ('BBC Recipes Index', False, URL('soupify','index.html')),
         ('Build Database', False, URL('soupify','parse.html')),
         ('Truncate Database', False, URL('soupify', 'redo_db')),
