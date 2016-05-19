@@ -1,0 +1,39 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{extend 'layout.html'}}
+
+{{block header}}
+    <header class="container-fluid background">
+      <div class="jumbotron text-center">
+        {{if response.title:}}
+        <h1>{{=response.title}}
+          <small>{{=response.subtitle or ''}}</small></h1>
+        {{pass}}
+      </div>
+    </header>
+{{end}}
+{{block right_sidebar}}
+{{end}}
+{{if 'rows' in globals():}}
+    {{for row in rows:}}
+        <div id="main_{{=row.id}}" onclick="jQuery('#subid-{{=row.id}}').slideToggle();" class="panel panel-default row">
+            <div class='panel-heading'>
+                {{=B(row.id)}}
+                {{ttl=row.recipe_title.replace('|','')}}
+                {{=ttl}}
+                {{=row.recipe_serves.replace('|','')}}
+            </div>
+            <div id="subid-{{=row.id}}" style="display:none;" class='panel-body'>
+                {{=H4(row.recipe_description.replace('|',''))}}
+                <div class='col-md-3'>
+                    <h5>Ingredients</h>
+                {{=SPAN(UL(row.recipe_ingredients))}}
+                </div>
+                <div class='col-md-6'>
+                    <h5>Method</h>
+                    {{=SPAN(UL(row.method_list))}}
+                </div>
+            </div>
+
+        </div>
+    {{pass}}
+{{pass}}
