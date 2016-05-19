@@ -3,4 +3,6 @@ private*
 uploads*
 sessions*
 errors*
+*.pyc
+*.log
 databases/*
