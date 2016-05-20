@@ -16,6 +16,9 @@
                     {{pass}}
                 {{pass}}
                 {{=row.recipe_serves.replace('|','')}}
+                <span type="button" class="btn btn-info btn-xs" aria-label="View Recipe">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </span>
             </div>
             <div id="subid-{{=row.id}}" style="display:none;" class='panel-body'>
                 {{=H4(row.recipe_description.replace('|',''))}}
