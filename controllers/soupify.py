@@ -22,11 +22,14 @@ def index():
             )
     if form.process().accepted:
         search_string=form.vars.search_for
+        orderby=db.recipe.recipe_title
         response.flash="Searching for {}".format(search_string)
     elif request.vars.has_key('search_string'):
         search_string=request.vars.search_string
+        orderby=db.recipe.recipe_title
     if len(search_string)>0:
-        rows=rows(db.recipe.recipe_title.contains(search_string))
+        for s in search_string.split(' '):
+            rows=rows(db.recipe.recipe_title.contains(s))
 
     # Final select
     rows=rows.select( orderby=orderby, limitby=(0,100))
