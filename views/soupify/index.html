@@ -15,7 +15,7 @@
 {{if 'rows' in globals():}}
         {{for row in rows:}}
             <div id="main_{{=row.id}}" onclick="jQuery('#subid-{{=row.id}}').slideToggle();" class="panel panel-default row">
-                <div class='panel-heading'>
+                <div class='panel-heading '>
                     {{=B(row.id)}}
                     {{ttl=row.recipe_title.replace('|','')}}
                     {{for t in ttl.split(' '):}}
@@ -48,3 +48,8 @@
             </div>
         {{pass}}
 {{pass}}
+<style>
+div.panel-heading a {
+    color:blue;
+}
+</style>
