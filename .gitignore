@@ -5,4 +5,5 @@ sessions*
 errors*
 *.pyc
 *.log
+*.bak
 databases/*

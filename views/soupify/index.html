@@ -1,37 +1,47 @@
-{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{left_sidebar_enabled,right_sidebar_enabled=True, True}}
 {{extend 'layout.html'}}
+{{block left_sidebar}}
 
-{{=H2(search_params)}}
-{{if 'rows' in globals():}}
-    {{for row in rows:}}
-        <div id="main_{{=row.id}}" onclick="jQuery('#subid-{{=row.id}}').slideToggle();" class="panel panel-default row">
-            <div class='panel-heading'>
-                {{=B(row.id)}}
-                {{ttl=row.recipe_title.replace('|','')}}
-                {{for t in ttl.split(' '):}}
-                    {{if t.lower() in ['with', 'and']:}}
-                        {{=t}}
-                    {{else:}}
-                        {{=A(t, _href=URL('index.html', vars={'search_string':t}), )}}
-                    {{pass}}
-                {{pass}}
-                {{=row.recipe_serves.replace('|','')}}
-                <span type="button" class="btn btn-info btn-xs pull-right" aria-label="View Recipe">
-                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                </span>
-            </div>
-            <div id="subid-{{=row.id}}" style="display:none;" class='panel-body'>
-                {{=H4(row.recipe_description.replace('|',''))}}
-                <div class='col-md-3'>
-                    <h5>Ingredients</h>
-                {{=SPAN(UL(row.recipe_ingredients))}}
-                </div>
-                <div class='col-md-6'>
-                    <h5>Method</h>
-                    {{=SPAN(UL(row.method_list))}}
-                </div>
-            </div>
+{{end}}
+{{block right_sidebar}}
+{{end}}
 
-        </div>
+<div class='well'>
+    {{=form}}
+    {{if search_params != None and len(search_params)>0:}}
+        <h2>You Searched For: {{=search_params}}</h2>
     {{pass}}
+</div>
+{{if 'rows' in globals():}}
+        {{for row in rows:}}
+            <div id="main_{{=row.id}}" onclick="jQuery('#subid-{{=row.id}}').slideToggle();" class="panel panel-default row">
+                <div class='panel-heading'>
+                    {{=B(row.id)}}
+                    {{ttl=row.recipe_title.replace('|','')}}
+                    {{for t in ttl.split(' '):}}
+                        {{if t.lower() in ['with', 'and']:}}
+                            {{=t}}
+                        {{else:}}
+                            {{=A(t, _href=URL('index.html', vars={'search_string':t}), )}}
+                        {{pass}}
+                    {{pass}}
+                    {{=row.recipe_serves.replace('|','')}}
+                    <span type="button" class="btn btn-info btn-xs pull-right" aria-label="View Recipe">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </span>
+                </div>
+                <div id="subid-{{=row.id}}" style="display:none;" class='panel-body'>
+                    {{=H4(row.recipe_description.replace('|',''))}}
+                    <div class='col-md-3'>
+                        <h5>Ingredients</h>
+                    {{=SPAN(UL(row.recipe_ingredients))}}
+                    </div>
+                    <div class='col-md-6'>
+                        <h5>Method</h>
+                        {{=SPAN(UL(row.method_list))}}
+                    </div>
+                </div>
+
+            </div>
+        {{pass}}
 {{pass}}

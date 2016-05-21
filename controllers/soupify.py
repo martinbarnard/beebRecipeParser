@@ -2,19 +2,36 @@
 our_data=[]
 # Our constants, rather than reload them each call
 from BeautifulSoup import BeautifulSoup
+
 def index():
     rows=db(db.recipe)
-    sort_by='recipe_title'
+    sort_by=None
     inverse=False
-    if request.vars.has_key('search_string'):
-        rows=rows(db.recipe.recipe_title.contains(request.vars.search_string))
-        orderby=db.recipe[sort_by]
+    search_string=""
+
+    if sort_by:
+        if inverse==False:
+            orderby=db.recipe[sort_by]
+        else:
+            orderby=~db.recipe[sort_by]
     else:
         orderby='<random>'
 
+    form=FORM('Search',
+            INPUT(_name='search_for'),INPUT(_type='submit')
+            )
+    if form.process().accepted:
+        search_string=form.vars.search_for
+        response.flash="Searching for {}".format(search_string)
+    elif request.vars.has_key('search_string'):
+        search_string=request.vars.search_string
+    if len(search_string)>0:
+        rows=rows(db.recipe.recipe_title.contains(search_string))
+
     # Final select
-    rows=rows.select(db.recipe.ALL, orderby=orderby, limitby=(0,100))
-    return dict(rows=rows, search_params=request.vars.search_string)
+    rows=rows.select( orderby=orderby, limitby=(0,100))
+    return dict(form=form,rows=rows, search_params=search_string)
+
 
 
 
